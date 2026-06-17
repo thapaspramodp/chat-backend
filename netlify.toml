@@ -1,6 +1,8 @@
 [build]
   # Netlify needs a publish directory to deploy, even if it's empty
   publish = "public"
+  # Legacy functions directory setting to ensure maximum compatibility
+  functions = "netlify/functions"
 
 [functions]
   # Tell Netlify where our Python serverless functions are located
