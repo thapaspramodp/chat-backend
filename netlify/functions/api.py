@@ -13,7 +13,7 @@ from mangum import Mangum
 # ── 1. Settings & Config ──────────────────────────────────────────────────────
 class Settings(BaseSettings):
     # OpenAI (backend eyes only)
-    openai_api_key: str
+    openai_api_key: str = ""
     openai_model: str = "gpt-4o-mini"
 
     # Proxy auth — must match what the Streamlit app sends in X-API-Key
@@ -38,7 +38,7 @@ def get_settings() -> Settings:
 settings = get_settings()
 
 # ── 2. OpenAI & HTTP Clients ──────────────────────────────────────────────────
-_openai_client = AsyncOpenAI(api_key=settings.openai_api_key)
+_openai_client = AsyncOpenAI(api_key=settings.openai_api_key or "placeholder")
 
 # ── 3. Proxy Completion Generator ─────────────────────────────────────────────
 async def stream_chat_completion(
@@ -48,7 +48,12 @@ async def stream_chat_completion(
     temperature: float = 0.7,
 ) -> AsyncGenerator[str, None]:
     """Streams tokens directly from OpenAI Chat Completions API."""
+    if not settings.openai_api_key:
+        yield "\n[Error: OPENAI_API_KEY is not configured on Netlify. Please set it in Netlify dashboard -> Site settings -> Environment variables.]\n"
+        return
+
     target_model = model or settings.openai_model
+
     try:
         stream = await _openai_client.chat.completions.create(
             model=target_model,
