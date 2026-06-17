@@ -1,0 +1,13 @@
+[build]
+  # Netlify needs a publish directory to deploy, even if it's empty
+  publish = "public"
+
+[functions]
+  # Tell Netlify where our Python serverless functions are located
+  directory = "netlify/functions"
+
+[[redirects]]
+  # Redirect all incoming requests to the API function so FastAPI handles routing
+  from = "/*"
+  to = "/.netlify/functions/api"
+  status = 200
