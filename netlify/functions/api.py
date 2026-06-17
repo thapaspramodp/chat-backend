@@ -176,5 +176,5 @@ def list_models():
     }
 
 # ── 8. Mangum Serverless Handler ──────────────────────────────────────────────
-# Strip "/.netlify/functions/api" so FastAPI routes are matched relative to root (/)
-handler = Mangum(app, api_gateway_base_path="/.netlify/functions/api")
+handler = Mangum(app)
+
