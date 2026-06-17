@@ -134,7 +134,15 @@ class RagChatRequest(BaseModel):
     message: str
 
 # ── 7. API Routes ─────────────────────────────────────────────────────────────
+@app.get("/")
+def read_root():
+    return {
+        "message": "Secure Chat Backend Proxy is active.",
+        "endpoints": ["/health", "/chat/completions", "/models", "/rag/chat"]
+    }
+
 @app.get("/health", tags=["meta"])
+
 def health():
     return {
         "status": "ok",
