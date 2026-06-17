@@ -9,4 +9,4 @@ from app.main import app
 from mangum import Mangum
 
 # This handler will receive the AWS API Gateway events sent by Netlify
-handler = Mangum(app)
+handler = Mangum(app, api_gateway_base_path="/.netlify/functions/api")
